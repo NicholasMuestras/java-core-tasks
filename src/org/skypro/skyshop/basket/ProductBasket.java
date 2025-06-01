@@ -36,15 +36,28 @@ public class ProductBasket {
         for (Product product : this.storage) {
             if (product != null) {
                 hasProducts = true;
-                System.out.println(product.getName() + ": " + product.getPrice());
+                System.out.println(product);
             }
         }
 
         if (hasProducts) {
             System.out.println("Итого: " + this.getTotalPrice());
+            System.out.println("Специальных товаров: " + this.getSpecialProductCount());
         } else {
             System.out.println("в корзине пусто");
         }
+    }
+
+    private int getSpecialProductCount() {
+        int count = 0;
+
+        for (Product product : this.storage) {
+            if (product != null && product.isSpecial()) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public boolean hasProduct(String name) {

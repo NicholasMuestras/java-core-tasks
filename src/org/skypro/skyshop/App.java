@@ -1,9 +1,12 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.searchEngine.SearchEngine;
+import org.skypro.skyshop.searchEngine.Searchable;
 
 public class App {
     public static void main(String[] args) {
@@ -45,5 +48,31 @@ public class App {
         basket.addProduct(new DiscountedProduct("SpecialProduct-2", 100, 10));
 
         basket.printBasket();
+
+        System.out.println();
+        System.out.println("HW: 4");
+
+        SearchEngine engine = new SearchEngine(10);
+
+        engine.add(new SimpleProduct("Simple Product (Tree)", 2))
+                .add(new FixPriceProduct("Special Product 1"))
+                .add(new DiscountedProduct("Special Product 2", 100, 10))
+                .add(new Article("Article about Tree", "So many symbols about trees."))
+                .add(new Article("Article about Sea", "So many symbols about sea."));
+
+        String[] needles = {"Tree", "Sea", "Special", "Product", "many symbols"};
+
+        for (String needle : needles) {
+            System.out.println();
+            System.out.println("Searching \"" + needle + "\":");
+
+            for (Searchable item : engine.search(needle)) {
+                if (item == null) {
+                    continue;
+                }
+
+                System.out.println("Type: " + item.getContentType() + " " + "Name: " + item.getName());
+            }
+        }
     }
 }

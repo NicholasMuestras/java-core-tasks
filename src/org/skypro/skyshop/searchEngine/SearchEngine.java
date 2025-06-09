@@ -4,15 +4,13 @@ public class SearchEngine {
     private static final int RESULT_ITEMS_COUNT_MAX = 5;
 
     private final Searchable[] haystack;
-    private Searchable[] found;
 
     public SearchEngine(int haystackSize) {
         this.haystack = new Searchable[haystackSize];
-        this.found = new Searchable[RESULT_ITEMS_COUNT_MAX];    //  result storage init. This step is important for code stability after changes.
     }
 
     public Searchable[] search(String needle) {
-        this.found = new Searchable[RESULT_ITEMS_COUNT_MAX];    //  result storage fast reset
+        Searchable[] found = new Searchable[RESULT_ITEMS_COUNT_MAX];    //  result storage fast reset
         int countFounded = 0;
 
         for (Searchable item : this.haystack) {
@@ -21,16 +19,16 @@ public class SearchEngine {
             }
 
             if (countFounded == RESULT_ITEMS_COUNT_MAX) {
-                return this.found;
+                return found;
             }
 
             if (item.getSearchTerm().contains(needle)) {
-                this.found[countFounded] = item;
+                found[countFounded] = item;
                 countFounded++;
             }
         }
 
-        return this.found;
+        return found;
     }
 
     public SearchEngine add(Searchable item) {

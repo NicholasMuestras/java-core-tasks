@@ -1,5 +1,7 @@
 package org.skypro.skyshop.searchEngine;
 
+import org.skypro.skyshop.searchEngine.exception.BestResultNotFound;
+
 public class SearchEngine {
     private static final int RESULT_ITEMS_COUNT_MAX = 5;
 
@@ -31,6 +33,31 @@ public class SearchEngine {
         return found;
     }
 
+    public Searchable searchBestResult(String needle) throws BestResultNotFound {
+        Searchable bestResult = null;
+        int bestResultScore = 0;
+        int currentResultScore;
+
+        for (Searchable item : this.haystack) {
+            if (item == null) {
+                continue;
+            }
+
+            currentResultScore = this.countSubstring(item.getSearchTerm(), needle);
+
+            if (currentResultScore > bestResultScore) {
+                bestResultScore = currentResultScore;
+                bestResult = item;
+            }
+        }
+
+        if (bestResultScore == 0) {
+            throw new BestResultNotFound("No result found for search string: " + needle);
+        }
+
+        return bestResult;
+    }
+
     public SearchEngine add(Searchable item) {
         for (int i = 0; i < this.haystack.length; i++) {
             if (this.haystack[i] == null) {
@@ -41,5 +68,27 @@ public class SearchEngine {
         }
 
         throw new RuntimeException("Unable to add an item. Haystack is full.");
+    }
+
+    private int countSubstring(String str, String sub) {
+        int count = 0;
+        int index = 0;
+
+        if (str == null || sub == null || sub.isEmpty()) {
+            return 0;
+        }
+
+        while (index < str.length()) {
+            index = str.indexOf(sub, index);
+
+            if (index == -1) {
+                break;
+            }
+
+            count++;
+            index += sub.length();
+        }
+
+        return count;
     }
 }

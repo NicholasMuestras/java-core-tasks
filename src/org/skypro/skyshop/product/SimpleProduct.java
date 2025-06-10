@@ -4,8 +4,13 @@ public class SimpleProduct extends Product {
 
     private final int price;
 
-    public SimpleProduct(String name, int price) {
+    public SimpleProduct(String name, int price) throws IllegalArgumentException {
         super(name);
+
+        if (price < 1) {
+            throw new IllegalArgumentException("Field 'price' must be equal 1 or more");
+        }
+
         this.price = price;
     }
 

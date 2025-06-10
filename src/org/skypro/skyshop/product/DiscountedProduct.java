@@ -7,7 +7,17 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String name, int price, int discount) {
         super(name);
+
+        if (price < 1) {
+            throw new IllegalArgumentException("Field 'price' must be equal 1 or more");
+        }
+
         this.price = price;
+
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException("Field 'discount' must be value from 0 to 100.");
+        }
+
         this.discount = discount;
     }
 

@@ -7,6 +7,7 @@ import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.searchEngine.SearchEngine;
 import org.skypro.skyshop.searchEngine.Searchable;
+import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
 public class App {
     public static void main(String[] args) {
@@ -57,6 +58,7 @@ public class App {
         engine.add(new SimpleProduct("Simple Product (Tree)", 2))
                 .add(new FixPriceProduct("Special Product 1"))
                 .add(new DiscountedProduct("Special Product 2", 100, 10))
+                .add(new SimpleProduct("Special product for products", 150))
                 .add(new Article("Article about Tree", "So many symbols about trees."))
                 .add(new Article("Article about Sea", "So many symbols about sea."));
 
@@ -73,6 +75,47 @@ public class App {
 
                 System.out.println("Type: " + item.getContentType() + " " + "Name: " + item.getName());
             }
+        }
+
+        System.out.println();
+        System.out.println("HW: 5");
+
+        try {
+            new SimpleProduct("    ", 2);   // wrong name case 1
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        try {
+            new SimpleProduct(null, 2);     // wrong name case 2
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        try {
+            new SimpleProduct("Wrong Product", 0);  // wrong price
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        try {
+            new DiscountedProduct("Wrong Product", 45, 105);    // wrong discount
+        } catch (IllegalArgumentException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        try {
+            Searchable bestProduct;
+            bestProduct = engine.searchBestResult("product"); // case 1: object isset
+            System.out.println("Best Product found: Type: " + bestProduct.getContentType() + " " + "Name: " + bestProduct.getName());
+        } catch (BestResultNotFoundException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        try {
+            engine.searchBestResult("soul"); // case 2: object NOT isset
+        } catch (BestResultNotFoundException exception) {
+            System.out.println(exception.getMessage());
         }
     }
 }

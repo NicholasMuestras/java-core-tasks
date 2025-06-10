@@ -7,7 +7,7 @@ import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.searchEngine.SearchEngine;
 import org.skypro.skyshop.searchEngine.Searchable;
-import org.skypro.skyshop.searchEngine.exception.BestResultNotFound;
+import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
 public class App {
     public static void main(String[] args) {
@@ -108,13 +108,13 @@ public class App {
             Searchable bestProduct;
             bestProduct = engine.searchBestResult("product"); // case 1: object isset
             System.out.println("Best Product found: Type: " + bestProduct.getContentType() + " " + "Name: " + bestProduct.getName());
-        } catch (BestResultNotFound exception) {
+        } catch (BestResultNotFoundException exception) {
             System.out.println(exception.getMessage());
         }
 
         try {
             engine.searchBestResult("soul"); // case 2: object NOT isset
-        } catch (BestResultNotFound exception) {
+        } catch (BestResultNotFoundException exception) {
             System.out.println(exception.getMessage());
         }
     }

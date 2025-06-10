@@ -1,6 +1,6 @@
 package org.skypro.skyshop.searchEngine;
 
-import org.skypro.skyshop.searchEngine.exception.BestResultNotFound;
+import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
 public class SearchEngine {
     private static final int RESULT_ITEMS_COUNT_MAX = 5;
@@ -33,7 +33,7 @@ public class SearchEngine {
         return found;
     }
 
-    public Searchable searchBestResult(String needle) throws BestResultNotFound {
+    public Searchable searchBestResult(String needle) throws BestResultNotFoundException {
         Searchable bestResult = null;
         int bestResultScore = 0;
         int currentResultScore;
@@ -52,7 +52,7 @@ public class SearchEngine {
         }
 
         if (bestResultScore == 0) {
-            throw new BestResultNotFound("No result found for search string: " + needle);
+            throw new BestResultNotFoundException("No result found for search string: " + needle);
         }
 
         return bestResult;

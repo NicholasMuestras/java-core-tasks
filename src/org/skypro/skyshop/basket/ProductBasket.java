@@ -2,20 +2,41 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class ProductBasket {
-    private Product[] storage = new Product[5];
+    private List<Product> storage = new LinkedList<>();
 
     public void addProduct(Product product) {
-        for (int i = 0; i < this.storage.length; i++) {
-            if (this.storage[i] == null) {
-                this.storage[i] = product;
+        this.storage.add(product);
+    }
 
-                return;
+    public boolean hasProduct(String name) {
+        for (Product product : this.storage) {
+            if (product != null && name.equals(product.getName())) {
+                return true;
             }
         }
 
-//        throw new RuntimeException("Unable to add an item. Storage is full.");
-        System.out.println("Невозможно добавить продукт");
+        return false;
+    }
+
+    public List<Product> deleteProductsByName(String name) {
+        Iterator<Product> iterator = this.storage.iterator();
+        List<Product> removed = new LinkedList<>();
+
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+
+            if (name.equals(product.getName())) {
+                removed.add(product);
+                this.storage.remove(product);
+            }
+        }
+
+        return removed;
     }
 
     public int getTotalPrice() {
@@ -60,17 +81,7 @@ public class ProductBasket {
         return count;
     }
 
-    public boolean hasProduct(String name) {
-        for (Product product : this.storage) {
-            if (product != null && name.equals(product.getName())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public void clear() {
-        this.storage = new Product[this.storage.length];
+        this.storage = new LinkedList<>();
     }
 }

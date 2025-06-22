@@ -4,10 +4,14 @@ import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
+import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.searchEngine.SearchEngine;
 import org.skypro.skyshop.searchEngine.Searchable;
 import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -22,7 +26,7 @@ public class App {
         basket.addProduct(new SimpleProduct("Lamp", 10));
         basket.addProduct(new SimpleProduct("Oil", 30));
         // step 2
-        basket.addProduct(new SimpleProduct("Vodka", 6));
+        basket.addProduct(new SimpleProduct("Vodka", 6)); // This item will add successful now.
         // step 3
         basket.printBasket();
         // step 4
@@ -53,7 +57,7 @@ public class App {
         System.out.println();
         System.out.println("HW: 4");
 
-        SearchEngine engine = new SearchEngine(10);
+        SearchEngine engine = new SearchEngine();
 
         engine.add(new SimpleProduct("Simple Product (Tree)", 2))
                 .add(new FixPriceProduct("Special Product 1"))
@@ -117,5 +121,46 @@ public class App {
         } catch (BestResultNotFoundException exception) {
             System.out.println(exception.getMessage());
         }
+
+        System.out.println();
+        System.out.println("HW: 6");
+
+        // step 1
+        List<Product> productsDeleted;
+        System.out.println();
+        System.out.println("Basket before product deleting:");
+        basket.printBasket();
+        productsDeleted = basket.deleteProductsByName("SpecialProduct-1");
+        System.out.println();
+        System.out.println("Basket after product deleting:");
+        basket.printBasket();
+
+        // step 2
+        Iterator<Product> iteratorOfDeletedProducts = productsDeleted.iterator();
+        System.out.println();
+        System.out.println("Products deleted:");
+
+        while (iteratorOfDeletedProducts.hasNext()) {
+            Product productDeleted = iteratorOfDeletedProducts.next();
+            System.out.println(productDeleted);
+        }
+
+        // step 3
+        System.out.println();
+        System.out.println("Basket printing using printBasket():");
+        basket.printBasket();
+
+        // step 4
+        List<Product> emptyProductsDeleted;
+        emptyProductsDeleted = basket.deleteProductsByName("some-name");
+
+        // step 5
+        if (emptyProductsDeleted.isEmpty()) {
+            System.out.println();
+            System.out.println("Список пуст");
+        }
+
+        // step 6
+        basket.printBasket();
     }
 }

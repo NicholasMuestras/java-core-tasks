@@ -2,31 +2,22 @@ package org.skypro.skyshop.searchEngine;
 
 import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SearchEngine {
-    private static final int RESULT_ITEMS_COUNT_MAX = 5;
+    private final List<Searchable> haystack;
 
-    private final Searchable[] haystack;
-
-    public SearchEngine(int haystackSize) {
-        this.haystack = new Searchable[haystackSize];
+    public SearchEngine() {
+        this.haystack = new LinkedList<>();
     }
 
-    public Searchable[] search(String needle) {
-        Searchable[] found = new Searchable[RESULT_ITEMS_COUNT_MAX];    //  result storage fast reset
-        int countFounded = 0;
+    public List<Searchable> search(String needle) {
+        List<Searchable> found = new LinkedList<>();    //  result storage fast reset
 
         for (Searchable item : this.haystack) {
-            if (item == null) {
-                continue;
-            }
-
-            if (countFounded == RESULT_ITEMS_COUNT_MAX) {
-                return found;
-            }
-
             if (item.getSearchTerm().contains(needle)) {
-                found[countFounded] = item;
-                countFounded++;
+                found.add(item);
             }
         }
 
@@ -59,15 +50,9 @@ public class SearchEngine {
     }
 
     public SearchEngine add(Searchable item) {
-        for (int i = 0; i < this.haystack.length; i++) {
-            if (this.haystack[i] == null) {
-                this.haystack[i] = item;
+        this.haystack.add(item);
 
-                return this;
-            }
-        }
-
-        throw new RuntimeException("Unable to add an item. Haystack is full.");
+        return this;
     }
 
     private int countSubstring(String str, String sub) {

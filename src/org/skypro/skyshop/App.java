@@ -12,6 +12,7 @@ import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -71,13 +72,17 @@ public class App {
         for (String needle : needles) {
             System.out.println();
             System.out.println("Searching \"" + needle + "\":");
+            Map<String, List<Searchable>> result = engine.search(needle);
 
-            for (Searchable item : engine.search(needle)) {
-                if (item == null) {
-                    continue;
+            for (List<Searchable> list : result.values()) {
+                for (Searchable item : list) {
+
+                    if (item == null) {
+                        continue;
+                    }
+
+                    System.out.println("Type: " + item.getContentType() + " " + "Name: " + item.getName());
                 }
-
-                System.out.println("Type: " + item.getContentType() + " " + "Name: " + item.getName());
             }
         }
 

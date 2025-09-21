@@ -15,7 +15,7 @@ public class SearchEngine {
     }
 
     public Map<String, List<Searchable>> search(String needle) {
-        Map<String, List<Searchable>> found = new TreeMap<>();    //  result storage fast reset
+        Map<String, List<Searchable>> found = new TreeMap<>();
         List<Searchable> setOfItems;
 
         for (Searchable item : this.haystack) {

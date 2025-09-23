@@ -4,7 +4,7 @@ import org.skypro.skyshop.searchEngine.Searchable;
 
 import java.util.Objects;
 
-abstract public class Product implements Searchable {
+abstract public class Product implements Searchable, Comparable {
     private final String name;
 
     public Product(String name) {
@@ -49,5 +49,15 @@ abstract public class Product implements Searchable {
     @Override
     public int hashCode() {
         return Objects.hashCode(getName());
+    }
+
+    @Override
+    public int compareTo(Object object) {
+
+        if (!(object instanceof Searchable)) {
+            throw new IllegalArgumentException("An Object must implements Searchable interface.");
+        }
+
+        return this.getName().compareTo(((Searchable) object).getName());
     }
 }

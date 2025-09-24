@@ -51,11 +51,15 @@ public class Article implements Searchable {
             return false;
         }
 
-        return Objects.equals(this.getName(), ((Searchable) article).getName());
+        if (!(article instanceof Article o)) {
+            return false;
+        }
+
+        return Objects.equals(this.getName(), o.getName()) && Objects.equals(this.getBody(), o.getBody());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getName());
+        return Objects.hashCode(this.getName() + this.getBody());
     }
 }

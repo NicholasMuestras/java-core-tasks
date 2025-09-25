@@ -1,5 +1,9 @@
 package org.skypro.skyshop.product;
 
+import org.skypro.skyshop.searchEngine.Searchable;
+
+import java.util.Objects;
+
 public class DiscountedProduct extends Product {
 
     private final int price;
@@ -38,5 +42,27 @@ public class DiscountedProduct extends Product {
     @Override
     public String toString() {
         return this.getName() + ": " + this.getPrice() + " (" + this.getDiscount() + "%)";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
+
+        if (!(object instanceof Searchable)) {
+            return false;
+        }
+
+        if (!(object instanceof DiscountedProduct o)) {
+            return false;
+        }
+
+        return Objects.equals(this.getName(), o.getName()) && this.getPrice() == o.getPrice() && this.getDiscount() == o.getDiscount();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getName() + getPrice() + getDiscount());
     }
 }

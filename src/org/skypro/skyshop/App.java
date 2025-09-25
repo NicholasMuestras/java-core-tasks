@@ -12,7 +12,7 @@ import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -72,17 +72,15 @@ public class App {
         for (String needle : needles) {
             System.out.println();
             System.out.println("Searching \"" + needle + "\":");
-            Map<String, List<Searchable>> result = engine.search(needle);
+            Set<Searchable> result = engine.search(needle);
 
-            for (List<Searchable> list : result.values()) {
-                for (Searchable item : list) {
+            for (Searchable item : result) {
 
-                    if (item == null) {
-                        continue;
-                    }
-
-                    System.out.println("Type: " + item.getContentType() + " " + "Name: " + item.getName());
+                if (item == null) {
+                    continue;
                 }
+
+                System.out.println("Type: " + item.getContentType() + " " + "Name: " + item.getName());
             }
         }
 
@@ -167,5 +165,26 @@ public class App {
 
         // step 6
         basket.printBasket();
+
+        System.out.println();
+        System.out.println("HW: 8");
+
+        SearchEngine engineHomeWork8 = new SearchEngine();
+
+        engineHomeWork8.add(new SimpleProduct("Product A", 2))
+                .add(new FixPriceProduct("Special Product BBB"))
+                .add(new DiscountedProduct("Special Product AA", 100, 10))
+                .add(new SimpleProduct("Best Product", 150))
+                .add(new Article("Article about Product Tree", "So many symbols about trees."))
+                .add(new Article("Best Product", "So many symbols about the Bes Product."))
+                .add(new Article("Article with same length title about a Product Banana", "some content"))
+                .add(new Article("Article with same length title about a Product Apple_", "some content"));
+
+        Set<Searchable> result = engineHomeWork8.search("Product");
+        System.out.println("Найдено по ключевому слову \"Product\" с кастомной сортировкой результата:");
+
+        for (Searchable item : result) {
+            System.out.println(item.getName());
+        }
     }
 }

@@ -1,34 +1,27 @@
 package org.skypro.skyshop.searchEngine;
 
+import org.skypro.skyshop.searchEngine.comparator.NameLengthComparator;
 import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class SearchEngine {
-    private final List<Searchable> haystack;
+    private final Set<Searchable> haystack;
 
     public SearchEngine() {
-        this.haystack = new LinkedList<>();
+        this.haystack = new HashSet<>();
     }
 
-    public Map<String, List<Searchable>> search(String needle) {
-        Map<String, List<Searchable>> found = new TreeMap<>();
+    public Set<Searchable> search(String needle) {
+        Set<Searchable> found = new TreeSet<>(new NameLengthComparator());
         List<Searchable> setOfItems;
 
         for (Searchable item : this.haystack) {
             if (item.getSearchTerm().contains(needle)) {
-                if (found.containsKey(item.getName())) {
-                    setOfItems = found.get(item.getName());
-                    setOfItems.add(item);
-                    found.put(item.getName(), setOfItems);
-                } else {
-                    setOfItems = new LinkedList<>();
-                    setOfItems.add(item);
-                    found.put(item.getName(), setOfItems);
-                }
+                found.add(item);
             }
         }
 

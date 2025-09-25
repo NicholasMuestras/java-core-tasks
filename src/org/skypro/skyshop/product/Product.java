@@ -39,7 +39,7 @@ abstract public class Product implements Searchable {
             return true;
         }
 
-        if (!(object instanceof Searchable)) {
+        if (this.getClass() != object.getClass()) {
             return false;
         }
 

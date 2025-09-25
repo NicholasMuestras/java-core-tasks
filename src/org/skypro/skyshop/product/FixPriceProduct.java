@@ -28,23 +28,6 @@ public class FixPriceProduct extends Product {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof Searchable)) {
-            return false;
-        }
-
-        if (!(object instanceof FixPriceProduct)) {
-            return false;
-        }
-
-        return Objects.equals(this.getName(), ((Searchable) object).getName()) && this.getPrice() == ((FixPriceProduct) object).getPrice();
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hashCode(getName() + getPrice());
     }

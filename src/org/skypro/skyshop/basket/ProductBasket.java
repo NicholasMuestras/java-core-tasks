@@ -2,10 +2,7 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProductBasket {
     private Map<String, List<Product>> storage = new HashMap<>();
@@ -41,27 +38,17 @@ public class ProductBasket {
     }
 
     public int getTotalPrice() {
-        int totalPrice = 0;
-
-        for (List<Product> setOfProducts : this.storage.values()) {
-            for (Product product : setOfProducts) {
-                if (product != null) {
-                    totalPrice += product.getPrice();
-                }
-            }
-        }
-
-        return totalPrice;
+        return this.storage.values().stream()
+                .flatMap(Collection::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
     public void printBasket() {
-        for (List<Product> setOfProducts : this.storage.values()) {
-            for (Product product : setOfProducts) {
-                if (product != null) {
-                    System.out.println(product);
-                }
-            }
-        }
+        this.storage.values().stream()
+                .flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .forEach(System.out::println);
 
         if (this.storage.isEmpty()) {
             System.out.println("в корзине пусто");
@@ -72,17 +59,11 @@ public class ProductBasket {
     }
 
     private int getSpecialProductCount() {
-        int count = 0;
-
-        for (List<Product> setOfProducts : this.storage.values()) {
-            for (Product product : setOfProducts) {
-                if (product != null && product.isSpecial()) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
+        return (int) this.storage.values().stream()
+                .flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public void clear() {

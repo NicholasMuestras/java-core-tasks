@@ -4,9 +4,9 @@ import org.skypro.skyshop.searchEngine.comparator.NameLengthComparator;
 import org.skypro.skyshop.searchEngine.exception.BestResultNotFoundException;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Set<Searchable> haystack;
@@ -16,16 +16,9 @@ public class SearchEngine {
     }
 
     public Set<Searchable> search(String needle) {
-        Set<Searchable> found = new TreeSet<>(new NameLengthComparator());
-        List<Searchable> setOfItems;
-
-        for (Searchable item : this.haystack) {
-            if (item.getSearchTerm().contains(needle)) {
-                found.add(item);
-            }
-        }
-
-        return found;
+        return this.haystack.stream()
+                .filter(o -> o.getSearchTerm().contains(needle))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new NameLengthComparator())));
     }
 
     public Searchable searchBestResult(String needle) throws BestResultNotFoundException {
